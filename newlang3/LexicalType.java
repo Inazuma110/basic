@@ -1,42 +1,46 @@
 package newlang3;
 
 public enum LexicalType {
-	LITERAL,	// •¶Žš—ñ’è”@i—áF@g•¶Žš—ñhj
-	INTVAL,		// ®”’è”	i—áF@‚Rj
-	DOUBLEVAL,	// ¬”“_’è”	i—áF@‚PD‚Qj
-	NAME,		// •Ï”		i—áF@ij
-	IF,			// IF
-	THEN,		// THEN
-	ELSE,		// ELSE
-	ELSEIF,		// ELSEIF
-	ENDIF,		// ENDIF
-	FOR,		// FOR
-	FORALL,		// FORALL
-	NEXT	,	// NEXT
-	EQ,			// =
-	LT,			// <
-	GT,			// >
-	LE,			// <=, =<
-	GE,			// >=, =>
-	NE,			// <>
-	FUNC,		// SUB
-	DIM,		// DIM
-	AS,			// AS
-	END,		// END
-	NL,			// ‰üs
-	DOT,		// .
-	WHILE,		// WHILE
-	DO,			// DO
-	UNTIL,		// UNTIL
-	ADD,		// +
-	SUB,		// -
-	MUL,		// *
-	DIV,		// /
-	LP,			// )
-	RP,			// (
-	COMMA,		// ,
-	LOOP,		// LOOP
-	TO,			// TO
-	WEND,		// WEND
-	EOF,		// end of file
+  // æ–‡å­—åˆ—
+  LITERAL,
+  // æ•°å€¤
+  INTVAL,
+  DOUBLEVAL,
+  // å¤‰æ•°å
+  NAME,
+  IF,
+  THEN,
+  ELSE,
+  ELSEIF,
+  ENDIF,
+  FOR,
+  FORALL,
+  NEXT,
+  EQ,
+  LT,
+  GT,
+  LE,
+  GE,
+  NE,
+  FUNC,
+  DIM,
+  AS,
+  END,
+  // new line
+  NL,
+  DOT,
+  WHILE,
+  DO,
+  UNTIL,
+  ADD,
+  SUB,
+  MUL,
+  DIV,
+  LP,
+  RP,
+  COMMA,
+  LOOP,
+  TO,
+  WEND,
+  EOF,
 }
