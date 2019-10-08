@@ -1,4 +1,3 @@
-
 package newlang3;
 
 public interface Value {
