@@ -3,19 +3,20 @@ import newlang3.LexicalAnalyzer;
 
 public class Main {
   public static void main(String args[]) {
-    // LexicalAnalyzer analyzer = new LexicalAnalyzer("main.bas");
     String fname = "Main.bas";
+    if(args.length > 0) fname = args[0];
     LexicalAnalyzer analyzer = new LexicalAnalyzerImpl(fname);
 
     while(true){
+      LexicalUnit unit;
       try{
-        LexicalUnit unit = analyzer.get();
+        unit = analyzer.get();
       }catch(Exception e){
         e.printStackTrace();
         return;
       }
       System.out.println(unit);
-      if(analyzer.getType() == LexicalType.EOF) break;
+      if(unit.getType() == LexicalType.EOF) break;
     }
   }
 }
