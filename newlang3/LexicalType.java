@@ -23,7 +23,9 @@ public enum LexicalType {
   GE,
   NE,
   FUNC,
+  //
   DIM,
+  //
   AS,
   END,
   // new line
@@ -43,4 +45,5 @@ public enum LexicalType {
   TO,
   WEND,
   EOF,
+  SPACE,
 }
