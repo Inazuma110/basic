@@ -31,8 +31,8 @@ public enum LexicalType {
   // new line
   NL,
   DOT,
-  WHILE,
   DO,
+  WHILE,
   UNTIL,
   ADD,
   SUB,

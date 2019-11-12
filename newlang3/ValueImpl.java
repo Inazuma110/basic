@@ -12,17 +12,17 @@ public class ValueImpl implements Value{
     // super(s, t);
     type = t;
     this.sVal = s;
-    switch (t) {
-      case ValueType.INTEGER:
-        intVal = (int) s;
-        break;
-      case ValueType.DOUBLE:
-        doubleVal = (double) s;
-        break;
-      case ValueType.BOOL:
-        boolVal = (boolean) s;
-        break;
-    }
+    // switch (t) {
+    //   case INTEGER:
+    //     intVal = (int) sVal;
+    //     break;
+    //   case DOUBLE:
+    //     doubleVal = (double) sVal;
+    //     break;
+    //   case BOOL:
+    //     boolVal = (boolean) sVal;
+    //     break;
+    // }
   }
 
   @Override

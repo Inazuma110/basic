@@ -23,7 +23,7 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
       put("-", LexicalType.SUB);
       put("/", LexicalType.DIV);
       put("*", LexicalType.MUL);
-      put(",", LexicalType.MUL);
+      put(",", LexicalType.COMMA);
     }
   };
 

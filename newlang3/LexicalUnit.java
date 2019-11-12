@@ -87,6 +87,8 @@ public class LexicalUnit {
         return ("RP");
       case COMMA:
         return ("COMMA");
+      case DO:
+        return ("DO");
       case LOOP:
         return ("LOOP");
       case TO:
