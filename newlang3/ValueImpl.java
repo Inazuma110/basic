@@ -2,26 +2,41 @@ package newlang3;
 
 public class ValueImpl implements Value{
   private String sVal;
+  private int intVal;
+  private double doubleVal;
+  private boolean boolVal;
+  private ValueType type;
+
 
   public ValueImpl(String s, ValueType t){
     // super(s, t);
+    type = t;
     this.sVal = s;
-
+    switch (t) {
+      case ValueType.INTEGER:
+        intVal = (int) s;
+        break;
+      case ValueType.DOUBLE:
+        doubleVal = (double) s;
+        break;
+      case ValueType.BOOL:
+        boolVal = (boolean) s;
+        break;
+    }
   }
 
   @Override
   public double getDValue(){
-
-    return 0.0;
+    return doubleVal;
   }
 
   @Override
   public boolean getBValue(){
-    return false;
+    return boolVal;
   }
 
   public ValueType getType(){
-    return null;
+    return this.type;
   }
 
   @Override
@@ -31,7 +46,6 @@ public class ValueImpl implements Value{
 
   @Override
   public int getIValue(){
-    return -1;
-
+    return intVal;
   }
 }

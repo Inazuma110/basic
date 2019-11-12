@@ -77,6 +77,10 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
         target += c;
         continue;
       }
+      if(c == '.'){
+        target += '.';
+        return doubleGet(target);
+      }
 
       if(ci > 0){
         try{
@@ -89,6 +93,35 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
     }
     Value int_val = new ValueImpl(target, ValueType.INTEGER);
     LexicalUnit unit = new LexicalUnit(LexicalType.INTVAL, int_val);
+    return unit;
+  }
+
+  private LexicalUnit doubleGet(String target){
+    while(true){
+      int ci = 0;
+      try{
+        ci = reader.read();
+      }catch(Exception e){
+        e.printStackTrace();
+      }
+      if(ci < 0) break;
+      char c = (char) ci;
+      if(c >= '0' && c <= '9'){
+        target += c;
+        continue;
+      }
+
+      if(ci > 0){
+        try{
+          reader.unread(ci);
+        }catch(Exception e){
+          e.printStackTrace();
+        }
+      }
+      break;
+    }
+    Value double_val = new ValueImpl(target, ValueType.DOUBLE);
+    LexicalUnit unit = new LexicalUnit(LexicalType.DOUBLEVAL, double_val);
     return unit;
   }
 
