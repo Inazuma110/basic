@@ -15,6 +15,7 @@ public class Main {
         e.printStackTrace();
         return;
       }
+      if(unit.getType() == LexicalType.SPACE) continue;
       System.out.println(unit);
       if(unit.getType() == LexicalType.EOF) break;
     }
