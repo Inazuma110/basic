@@ -1,5 +1,5 @@
 run:
-	javac newlang3/Main.java
-	java newlang3.Main test.bas
+	javac newlang4/Main.java
+	java newlang4.Main test.bas
 compile:
-	javac newlang3/Main.java
+	javac newlang4/Main.java

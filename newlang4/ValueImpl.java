@@ -1,4 +1,4 @@
-package newlang3;
+package newlang4;
 
 public class ValueImpl implements Value{
   private String sVal;

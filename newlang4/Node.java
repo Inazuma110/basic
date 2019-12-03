@@ -15,7 +15,7 @@ public class Node {
   public NodeType getType() {
     return type;
   }
-  public boolean Parse() throws Exception {
+  public boolean parse() throws Exception {
     return true;
   }
   public Value getValue() throws Exception {
