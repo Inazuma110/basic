@@ -4,8 +4,7 @@ import java.util.*;
 public class StmtList extends Node{
 
   static final Set<LexicalType> firstSet = EnumSet.of(
-      LexicalType.NAME, LexicalType.FOR, LexicalType.END,
-      LexicalType.WHILE, LexicalType.IF, LexicalType.DO
+      LexicalType.NAME
       );
 
   Environment env;
@@ -27,16 +26,21 @@ public class StmtList extends Node{
   // @Override
   public boolean parse() throws Exception{
     LexicalUnit first = env.getInput().get();
-
-    while(true){
-      if(Stmt.isFirst(first)){
-        Node handler = Stmt.getHandler(first, env);
-        return handler.parse();
-      }else if(Block.isFirst(first)){
-        Node handler = Block.getHandler(first, env);
-        return handler.parse();
-      }else break;
+    env.getInput().unget(first);
+    if(Variable.isFirst(first)){
+      handler = Variable.getHandler(first, env);
+      handler.parse();
     }
-    return false;
+    first = env.getInput().get();
+    if(first.getType() != LexicalUnit.EQ) return false;
+    first = env.getInput().get();
+    env.getInput().unget(first);
+    if(ExprNode.isFirst(first)){
+      handler = ExprNode.getHandler(first, env);
+      System.out.println("expr");
+      handler.parse();
+    }
+
+    return true;
   }
 }

@@ -3,7 +3,6 @@ package newlang4;
 import java.io.FileInputStream;
 
 public class Main {
-
   /**
    * @param args
    */
@@ -19,14 +18,17 @@ public class Main {
     lex = new LexicalAnalyzerImpl("test.bas");
     env = new Environment(lex);
     first = lex.get();
+    System.out.println(first);
+    lex.unget(first);
 
     if(Program.isFirst(first)){
-    //   Node handler = Program.getHandler(first, env);
-    //   handler.parse();
-    //   System.out.println(program);
-    // }else{
-    //   System.out.println("syntax error");
-    // }
+      Node handler = Program.getHandler(first, env);
+      // System.out.println(handler);
+      // handler.parse();
+      //   System.out.println(program);
+      // }else{
+      //   System.out.println("syntax error");
+      // }
     }
 
     // program = Program.isMatch(env, first);

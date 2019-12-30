@@ -1,23 +1,22 @@
 package newlang4;
 import java.util.*;
 
-public class StmtList extends Node{
+public class Block extends Node{
 
   static final Set<LexicalType> firstSet = EnumSet.of(
-      LexicalType.NAME, LexicalType.FOR, LexicalType.END,
-      LexicalType.WHILE, LexicalType.IF, LexicalType.DO
+      LexicalType.IF, LexicalType.WHILE, LexicalType.DO
       );
 
-  Environment env;
-  LexicalUnit first;
+  public LexicalUnit first;
+  public Environment env;
 
-  private StmtList(LexicalUnit first, Environment env) {
-    this.env = env;
+  private Block(LexicalUnit first, Environment env) {
     this.first = first;
+    this.env = env;
   }
 
   public static Node getHandler(LexicalUnit unit, Environment env){
-    return new StmtList(unit, env);
+    return null;
   }
 
   public static boolean isFirst(LexicalUnit unit){
@@ -31,10 +30,10 @@ public class StmtList extends Node{
     while(true){
       if(Stmt.isFirst(first)){
         Node handler = Stmt.getHandler(first, env);
-        return handler.parse();
+        handler.parse();
       }else if(Block.isFirst(first)){
         Node handler = Block.getHandler(first, env);
-        return handler.parse();
+        handler.parse();
       }else break;
     }
     return false;

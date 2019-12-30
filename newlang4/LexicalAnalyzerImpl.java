@@ -31,7 +31,7 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
     try{
       this.file = new File(fname);
       this.fr = new FileReader(fname);
-      this.reader = new PushbackReader(fr);
+      this.reader = new PushbackReader(fr, 100);
     }catch(FileNotFoundException e){
       e.printStackTrace();
     }
@@ -226,8 +226,15 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
     return false;
   }
 
+  // TODO: unget func
   @Override
   public void unget(LexicalUnit token) throws Exception{
+    String val = token.value.getSValue();
+    try{
+      reader.unread(val.toCharArray());
+    }catch(Exception e){
+      e.printStackTrace();
+    }
   }
 
   @Override
