@@ -17,21 +17,21 @@ public class Main {
     // fin = new FileInputStream("./test.bas");
     lex = new LexicalAnalyzerImpl("test.bas");
     env = new Environment(lex);
-    first = lex.get();
+    first = env.getInput().get();
+    // first = lex.get();
     System.out.println(first);
     lex.unget(first);
 
+
     if(Program.isFirst(first)){
       Node handler = Program.getHandler(first, env);
+      handler.parse();
       // System.out.println(handler);
-      // handler.parse();
-      //   System.out.println(program);
-      // }else{
-      //   System.out.println("syntax error");
-      // }
+    }else{
+      System.out.println("syntax error");
     }
 
-    // program = Program.isMatch(env, first);
+  // program = Program.isMatch(env, first);
     // if (program != null && program.Parse()) {
     //   System.out.println(program);
     //   System.out.println("value = " + program.getValue());

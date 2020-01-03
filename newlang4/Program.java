@@ -1,3 +1,7 @@
+/**
+ * <program> ::= <stmt_list>
+ */
+
 package newlang4;
 import java.util.*;
 
@@ -13,6 +17,7 @@ public class Program extends Node{
 
   private Program(LexicalUnit first, Environment env) {
     this.env = env;
+    this.first = first;
   }
 
   public static Node getHandler(LexicalUnit first, Environment env){
@@ -25,8 +30,8 @@ public class Program extends Node{
 
   // @Override
   public boolean parse() throws Exception{
-    LexicalUnit first = env.getInput().get();
-    // System.out.println(first);
+    // LexicalUnit first = env.getInput().get();
+    System.out.println("Program");
     if(StmtList.isFirst(first)){
       stmt_list = StmtList.getHandler(first, env);
       return stmt_list.parse();
@@ -36,7 +41,7 @@ public class Program extends Node{
     return false;
   }
 
-  // public String to_string(){
-  //   return stmt_list.to_string();
-  // }
+  public String toString(){
+    return stmt_list.toString();
+  }
 }

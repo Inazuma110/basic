@@ -41,7 +41,7 @@ public class StmtNode extends Node{
     if(body != null){
       return body.Parse();
     }
-    
+
     if (lu.getType() == LexicalType.END) {
       super.type = NodeType.END;
       return true;

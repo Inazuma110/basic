@@ -8,15 +8,25 @@ if expand('%') == '' && !&modified && line('$') <= 1 && getline(1) == ''
 endif
 set shortmess=aoO
 badd +1 newlang4/Main.java
-badd +5 term://.//30620:/home/linuxbrew/.linuxbrew/bin/zsh
 badd +1 newlang4/Program.java
-badd +1 newlang4/StmtList.java
-badd +1 newlang4/Environment.java
+badd +1 term://.//5476:/home/linuxbrew/.linuxbrew/bin/zsh
+badd +43 newlang4/LexicalType.java
+badd +1 newlang4/StmtNode.java
+badd +35 newlang4/StmtList.java
 badd +1 newlang4/Stmt.java
-badd +2 newlang4/Block.java
-badd +109 newlang4/LexicalUnit.java
-badd +1 newlang4/LexicalType.java
-badd +1 term://.//30694:/home/linuxbrew/.linuxbrew/bin/zsh
+badd +24 memo.md
+badd +1 newlang4/ExprNode.java
+badd +2 newlang4/CallSub.java
+badd +18 newlang4/Node.java
+badd +1 newlang4/SubstNode.java
+badd +15 newlang4/NodeType.java
+badd +1 Session.vim
+badd +1 newlang4/LexicalAnalyzer.java
+badd +26 newlang4/LexicalAnalyzerImpl.java
+badd +12 newlang4/LexicalUnit.java
+badd +5 newlang4/Environment.java
+badd +1 newlang4/Variable.java
+badd +0 term://.//26837:/home/linuxbrew/.linuxbrew/bin/zsh
 argglobal
 %argdel
 $argadd newlang4/Main.java
@@ -60,12 +70,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 32 - ((16 * winheight(0) + 13) / 27)
+let s:l = 30 - ((16 * winheight(0) + 13) / 27)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-32
-normal! 07|
+30
+normal! 020|
 wincmd w
 argglobal
 if bufexists("newlang4/Program.java") | buffer newlang4/Program.java | else | edit newlang4/Program.java | endif
@@ -78,12 +88,12 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 35 - ((18 * winheight(0) + 12) / 25)
+let s:l = 35 - ((16 * winheight(0) + 12) / 25)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
 35
-normal! 0
+normal! 07|
 wincmd w
 argglobal
 if bufexists("newlang4/StmtList.java") | buffer newlang4/StmtList.java | else | edit newlang4/StmtList.java | endif
@@ -96,15 +106,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 20 - ((19 * winheight(0) + 13) / 27)
+let s:l = 32 - ((9 * winheight(0) + 13) / 27)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-20
-normal! 033|
+32
+normal! 05|
 wincmd w
 argglobal
-if bufexists("term://.//30620:/home/linuxbrew/.linuxbrew/bin/zsh") | buffer term://.//30620:/home/linuxbrew/.linuxbrew/bin/zsh | else | edit term://.//30620:/home/linuxbrew/.linuxbrew/bin/zsh | endif
+if bufexists("term://.//5476:/home/linuxbrew/.linuxbrew/bin/zsh") | buffer term://.//5476:/home/linuxbrew/.linuxbrew/bin/zsh | else | edit term://.//5476:/home/linuxbrew/.linuxbrew/bin/zsh | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -113,14 +123,13 @@ setlocal fdl=100
 setlocal fml=1
 setlocal fdn=20
 setlocal fen
-let s:l = 25 - ((24 * winheight(0) + 12) / 25)
+let s:l = 3291 - ((24 * winheight(0) + 12) / 25)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-25
-normal! 0
+3291
+normal! 051|
 wincmd w
-4wincmd w
 exe '1resize ' . ((&lines * 27 + 28) / 56)
 exe 'vert 1resize ' . ((&columns * 95 + 95) / 191)
 exe '2resize ' . ((&lines * 25 + 28) / 56)
@@ -129,7 +138,7 @@ exe '3resize ' . ((&lines * 27 + 28) / 56)
 exe 'vert 3resize ' . ((&columns * 95 + 95) / 191)
 exe '4resize ' . ((&lines * 25 + 28) / 56)
 exe 'vert 4resize ' . ((&columns * 95 + 95) / 191)
-tabedit newlang4/Stmt.java
+tabedit newlang4/StmtNode.java
 set splitbelow splitright
 wincmd _ | wincmd |
 split
@@ -168,32 +177,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 16 - ((9 * winheight(0) + 13) / 26)
+let s:l = 22 - ((15 * winheight(0) + 13) / 26)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-16
-normal! 03|
+22
+normal! 058|
 wincmd w
 argglobal
-if bufexists("term://.//30694:/home/linuxbrew/.linuxbrew/bin/zsh") | buffer term://.//30694:/home/linuxbrew/.linuxbrew/bin/zsh | else | edit term://.//30694:/home/linuxbrew/.linuxbrew/bin/zsh | endif
-setlocal fdm=manual
-setlocal fde=0
-setlocal fmr={{{,}}}
-setlocal fdi=#
-setlocal fdl=100
-setlocal fml=1
-setlocal fdn=20
-setlocal fen
-let s:l = 26 - ((25 * winheight(0) + 13) / 26)
-if s:l < 1 | let s:l = 1 | endif
-exe s:l
-normal! zt
-26
-normal! 0
-wincmd w
-argglobal
-if bufexists("newlang4/Block.java") | buffer newlang4/Block.java | else | edit newlang4/Block.java | endif
+if bufexists("newlang4/Stmt.java") | buffer newlang4/Stmt.java | else | edit newlang4/Stmt.java | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -203,15 +195,15 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 15 - ((14 * winheight(0) + 13) / 26)
+let s:l = 37 - ((15 * winheight(0) + 13) / 26)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-15
-normal! 019|
+37
+normal! 07|
 wincmd w
 argglobal
-if bufexists("newlang4/LexicalType.java") | buffer newlang4/LexicalType.java | else | edit newlang4/LexicalType.java | endif
+if bufexists("newlang4/StmtList.java") | buffer newlang4/StmtList.java | else | edit newlang4/StmtList.java | endif
 setlocal fdm=manual
 setlocal fde=0
 setlocal fmr={{{,}}}
@@ -221,12 +213,29 @@ setlocal fml=1
 setlocal fdn=20
 setlocal fen
 silent! normal! zE
-let s:l = 34 - ((21 * winheight(0) + 13) / 26)
+let s:l = 42 - ((18 * winheight(0) + 13) / 26)
 if s:l < 1 | let s:l = 1 | endif
 exe s:l
 normal! zt
-34
+42
 normal! 03|
+wincmd w
+argglobal
+if bufexists("term://.//26837:/home/linuxbrew/.linuxbrew/bin/zsh") | buffer term://.//26837:/home/linuxbrew/.linuxbrew/bin/zsh | else | edit term://.//26837:/home/linuxbrew/.linuxbrew/bin/zsh | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=100
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+let s:l = 671 - ((23 * winheight(0) + 13) / 26)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+671
+normal! 09|
 wincmd w
 exe '1resize ' . ((&lines * 26 + 28) / 56)
 exe 'vert 1resize ' . ((&columns * 95 + 95) / 191)
@@ -236,7 +245,112 @@ exe '3resize ' . ((&lines * 26 + 28) / 56)
 exe 'vert 3resize ' . ((&columns * 95 + 95) / 191)
 exe '4resize ' . ((&lines * 26 + 28) / 56)
 exe 'vert 4resize ' . ((&columns * 95 + 95) / 191)
-tabnext 1
+tabedit newlang4/SubstNode.java
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 95 + 95) / 191)
+exe 'vert 2resize ' . ((&columns * 95 + 95) / 191)
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=100
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 34 - ((33 * winheight(0) + 26) / 53)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+34
+normal! 05|
+wincmd w
+argglobal
+if bufexists("newlang4/ExprNode.java") | buffer newlang4/ExprNode.java | else | edit newlang4/ExprNode.java | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=100
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 21 - ((20 * winheight(0) + 26) / 53)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+21
+normal! 026|
+wincmd w
+exe 'vert 1resize ' . ((&columns * 95 + 95) / 191)
+exe 'vert 2resize ' . ((&columns * 95 + 95) / 191)
+tabedit newlang4/CallSub.java
+set splitbelow splitright
+wincmd _ | wincmd |
+vsplit
+1wincmd h
+wincmd w
+set nosplitbelow
+set nosplitright
+wincmd t
+set winminheight=0
+set winheight=1
+set winminwidth=0
+set winwidth=1
+exe 'vert 1resize ' . ((&columns * 95 + 95) / 191)
+exe 'vert 2resize ' . ((&columns * 95 + 95) / 191)
+argglobal
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=100
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 41 - ((40 * winheight(0) + 26) / 53)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+41
+normal! 0
+wincmd w
+argglobal
+if bufexists("newlang4/CallSub.java") | buffer newlang4/CallSub.java | else | edit newlang4/CallSub.java | endif
+setlocal fdm=manual
+setlocal fde=0
+setlocal fmr={{{,}}}
+setlocal fdi=#
+setlocal fdl=100
+setlocal fml=1
+setlocal fdn=20
+setlocal fen
+silent! normal! zE
+let s:l = 39 - ((38 * winheight(0) + 26) / 53)
+if s:l < 1 | let s:l = 1 | endif
+exe s:l
+normal! zt
+39
+normal! 03|
+wincmd w
+2wincmd w
+exe 'vert 1resize ' . ((&columns * 95 + 95) / 191)
+exe 'vert 2resize ' . ((&columns * 95 + 95) / 191)
+tabnext 4
 set stal=1
 if exists('s:wipebuf') && getbufvar(s:wipebuf, '&buftype') isnot# 'terminal'
   silent exe 'bwipe ' . s:wipebuf

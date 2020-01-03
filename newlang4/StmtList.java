@@ -10,8 +10,9 @@ public class StmtList extends Node{
 
   Environment env;
   LexicalUnit first;
+  Node handler;
 
-  private StmtList(LexicalUnit first, Environment env) {
+  StmtList(LexicalUnit first, Environment env) {
     this.env = env;
     this.first = first;
   }
@@ -26,17 +27,23 @@ public class StmtList extends Node{
 
   // @Override
   public boolean parse() throws Exception{
-    LexicalUnit first = env.getInput().get();
-
+    System.out.println("Stmtlist");
     while(true){
       if(Stmt.isFirst(first)){
-        Node handler = Stmt.getHandler(first, env);
+        handler = Stmt.getHandler(first, env);
         return handler.parse();
       }else if(Block.isFirst(first)){
-        Node handler = Block.getHandler(first, env);
+        handler = Block.getHandler(first, env);
         return handler.parse();
       }else break;
     }
     return false;
+  }
+
+  @Override
+  public String toString(){
+    return handler.toString();
+      // if(Stmt.isFirst(first)) return Stmt.toString(first);
+      // else if(Block.isFirst(first)) return Block.toString(first);
   }
 }

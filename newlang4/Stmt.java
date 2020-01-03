@@ -9,6 +9,7 @@ public class Stmt extends Node{
 
   public LexicalUnit first;
   public Environment env;
+  public Node handler;
 
   private Stmt(LexicalUnit first, Environment env) {
     this.env = env;
@@ -16,7 +17,7 @@ public class Stmt extends Node{
   }
 
   public static Node getHandler(LexicalUnit unit, Environment env){
-    return null;
+    return new Stmt(unit, env);
   }
 
   public static boolean isFirst(LexicalUnit unit){
@@ -25,17 +26,26 @@ public class Stmt extends Node{
 
   // @Override
   public boolean parse() throws Exception{
-    LexicalUnit first = env.getInput().get();
 
     while(true){
-      if(Stmt.isFirst(first)){
-        Node handler = Stmt.getHandler(first, env);
+      LexicalUnit first = env.getInput().get();
+      System.out.println("stmt");
+      if(SubstNode.isFirst(first)){
+        handler = SubstNode.getHandler(first, env);
         handler.parse();
-      }else if(Block.isFirst(first)){
-        Node handler = Block.getHandler(first, env);
+      }else if(CallSub.isFirst(first)){
+        handler = Stmt.getHandler(first, env);
         handler.parse();
-      }else break;
+      }
+      // }else if(For.isFirst(first)){
+      //   Node handler = Block.getHandler(first, env);
+      //   handler.parse();
+      else break;
     }
     return false;
+  }
+
+  public String toString() {
+    return handler.toString();
   }
 }

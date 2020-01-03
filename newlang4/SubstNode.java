@@ -1,7 +1,7 @@
 package newlang4;
 import java.util.*;
 
-public class StmtList extends Node{
+public class SubstNode extends Node{
 
   static final Set<LexicalType> firstSet = EnumSet.of(
       LexicalType.NAME
@@ -9,14 +9,15 @@ public class StmtList extends Node{
 
   Environment env;
   LexicalUnit first;
+  Node handler;
 
-  private StmtList(LexicalUnit first, Environment env) {
+  private SubstNode(LexicalUnit first, Environment env) {
     this.env = env;
     this.first = first;
   }
 
   public static Node getHandler(LexicalUnit unit, Environment env){
-    return new StmtList(unit, env);
+    return new SubstNode(unit, env);
   }
 
   public static boolean isFirst(LexicalUnit unit){
@@ -25,22 +26,31 @@ public class StmtList extends Node{
 
   // @Override
   public boolean parse() throws Exception{
-    LexicalUnit first = env.getInput().get();
-    env.getInput().unget(first);
+    // LexicalUnit first = env.getInput().get();
+    // env.getInput().unget(first);
+    System.out.println("subst");
     if(Variable.isFirst(first)){
       handler = Variable.getHandler(first, env);
-      handler.parse();
     }
-    first = env.getInput().get();
-    if(first.getType() != LexicalUnit.EQ) return false;
-    first = env.getInput().get();
-    env.getInput().unget(first);
-    if(ExprNode.isFirst(first)){
+    LexicalUnit eq = env.getInput().get();
+
+    if(eq.getType() != LexicalType.EQ) return false;
+    //
+    LexicalUnit expr = env.getInput().get();
+    // // env.getInput().unget(first);
+    if(ExprNode.isFirst(expr)){
       handler = ExprNode.getHandler(first, env);
       System.out.println("expr");
       handler.parse();
-    }
+    }else return false;
 
     return true;
   }
+
+  @Override
+  public String toString() {
+    return first.value.getSValue() + "[";
+    // return handler.toString();
+  }
+
 }

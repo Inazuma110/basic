@@ -24,6 +24,8 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
       put("/", LexicalType.DIV);
       put("*", LexicalType.MUL);
       put(",", LexicalType.COMMA);
+      put("(", LexicalType.LP);
+      put(")", LexicalType.RP);
     }
   };
 
@@ -57,7 +59,9 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
       return literalGet(c);
     }
 
-    return specialGet(c);
+    LexicalUnit sp = specialGet(c);
+    if(sp.getType() == LexicalType.SPACE) sp = this.get();
+    return sp;
   }
 
   private LexicalUnit intGet(char c1){
@@ -197,6 +201,8 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
 
     String target = "";
     target += c1;
+    if(target.equals("(") || target.equals(")"))
+      return new LexicalUnit(symbolMap.get(target));;
     while(true){
       int ci = 0;
       try{

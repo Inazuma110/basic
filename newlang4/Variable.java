@@ -6,22 +6,19 @@ public class Variable extends Node {
   /** Creates a new instance of variable */
   public Variable(String name) {
     var_name = name;
+    System.out.println(var_name);
   }
   public Variable(LexicalUnit u) {
     var_name = u.getValue().getSValue();
   }
 
-  public static Node isMatch(Environment my_env, LexicalUnit first) {
-    if (first.getType() == LexicalType.NAME) {
-      Variable v;
-      /*
-         String s = first.getValue().getSValue();
-         v = my_env.getVariable(s);
-         return v;
-         */
-      return new Variable(first.getValue().getSValue());
-    }
-    return null;
+  public static boolean isFirst(LexicalUnit first) {
+    if (first.getType() == LexicalType.NAME) return true;
+    else return false;
+  }
+
+  public static Node getHandler(LexicalUnit unit, Environment env){
+    return new Variable(unit.value.getSValue());
   }
 
   public void setValue(Value my_v) {
@@ -30,6 +27,11 @@ public class Variable extends Node {
 
   public Value getValue() {
     return v;
+  }
+
+  @Override
+  public String toString() {
+    return var_name;
   }
 
 }
