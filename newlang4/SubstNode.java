@@ -35,12 +35,11 @@ public class SubstNode extends Node{
     LexicalUnit eq = env.getInput().get();
 
     if(eq.getType() != LexicalType.EQ) return false;
-    //
+
     LexicalUnit expr = env.getInput().get();
-    // // env.getInput().unget(first);
+    env.getInput().unget(expr);
     if(ExprNode.isFirst(expr)){
       handler = ExprNode.getHandler(first, env);
-      System.out.println("expr");
       handler.parse();
     }else return false;
 

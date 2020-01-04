@@ -201,8 +201,10 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
 
     String target = "";
     target += c1;
-    if(target.equals("(") || target.equals(")"))
-      return new LexicalUnit(symbolMap.get(target));;
+    if(target.equals("(") || target.equals(")")){
+      Value val = new ValueImpl(target, ValueType.STRING);
+      return new LexicalUnit(symbolMap.get(target), val);
+    }
     while(true){
       int ci = 0;
       try{
@@ -222,7 +224,8 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
       }
       target += c;
     }
-    if(symbolMap.get(target) != null) return new LexicalUnit(symbolMap.get(target));
+    Value val = new ValueImpl(target, ValueType.STRING);
+    if(symbolMap.get(target) != null) return new LexicalUnit(symbolMap.get(target), val);
     return new LexicalUnit(LexicalType.EOF);
   }
 
@@ -232,7 +235,6 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
     return false;
   }
 
-  // TODO: unget func
   @Override
   public void unget(LexicalUnit token) throws Exception{
     String val = token.value.getSValue();

@@ -1,5 +1,6 @@
 package newlang4;
 import java.util.*;
+import java.*;
 
 public class ExprNode extends Node{
   List<Node> operand = new ArrayList<Node>();
@@ -8,27 +9,29 @@ public class ExprNode extends Node{
   static final Set<LexicalType> firstSet = EnumSet.of(
       LexicalType.NAME, LexicalType.INTVAL,
       LexicalType.DOUBLEVAL, LexicalType.LITERAL,
-      LexicalType.LP,
+      LexicalType.LP, LexicalType.RP,
       LexicalType.SUB, LexicalType.MUL,
       LexicalType.DIV, LexicalType.ADD
       );
 
-  static Map<String, Integer> priorityMap = new HashMap<String, Integer>(){
+  static Map<LexicalType, Integer> priorityMap = new HashMap<LexicalType, Integer>(){
     {
-      put("*", 3);
-      put("/", 3);
-      put("+", 2);
-      put("-", 2);
-      put("=", 1);
+      put(LexicalType.DIV, 3);
+      put(LexicalType.MUL, 2);
+      put(LexicalType.ADD, 1);
+      put(LexicalType.SUB, 1);
     }
   };
 
-  static Map<LexicalType, String> opeMap = new HashMap<LexicalType, String>(){{
-    put(LexicalType.ADD, "+");
-    put(LexicalType.SUB, "-");
-    put(LexicalType.MUL, "*");
-    put(LexicalType.DIV, "/");
-  }};
+  // static Map<LexicalType, String> opeMap = new HashMap<LexicalType, String>(){{
+  //   put(LexicalType.ADD, "+");
+  //   put(LexicalType.SUB, "-");
+  //   put(LexicalType.MUL, "*");
+  //   put(LexicalType.DIV, "/");
+  // }};
+
+  public Stack<LexicalUnit> rpn = new Stack<>();
+  public Queue<LexicalUnit> result = new ArrayDeque<>();
 
   Environment env;
   LexicalUnit first;
@@ -56,61 +59,57 @@ public class ExprNode extends Node{
 
   // @Override
   public boolean parse() throws Exception{
-    LexicalUnit unit;
-    Node handler = null;
+    System.out.println("expr");
+    LexicalUnit unit = env.getInput().get();
+    env.getInput().unget(unit);
 
-    int i = 0;
-    while(true){
-      return false;
-      // unit = env.getInput().get();
-      // if(i % 2 == 0){
-        // if(unit.getType() == LexicalType.LP){
-    //       unit = env.getInput().get();
-    //       if(ExprNode.isFirst(unit)){
-    //         handler = ExprNode.getHandler(unit, env);
-    //         env.getInput().unget(unit);
-    //       }else{
-    //         System.out.println("Error");
-    //         return false;
-    //       }
-    //
-    //       if(!handler.parse()){
-    //         System.out.println("Error");
-    //         return false;
-    //       }
-    //
-    //     }else if(unit.getType() == LexicalType.NAME){
-    //       LexicalUnit unit2 = env.getInput().get();
-    //       env.unget(unit2);
-    //       env.unget(unit1);
-    //       if(unit2.getType() == LexicalType.LP) {
-    //         // call func
-    //       }else{
-    //
-    //       }
-    //     }else if(unit.getType() == LexicalType.LITERAL){
-    //       env.getInput().unget(unit);
-    //     }else if(unit.getType() == LexicalType.INTVAL){
-    //       env.getInput().unget(unit);
-    //       if(Int.isFirst(unit)) {
-    //         handler = Int.getHandler(unit, env);
-    //       }
-    //     }
-    //     operand.add(handler);
-    //   }else{
-    //     if(ope.containsKey(unit.getType())) operators.add(unit);
-    //     else{
-    //       if(unit.getType() == LexicalType.NL) env.getInput().unget(unit);
-    //       break;
-    //     }
-    //   }
-      // i++;
+    while(ExprNode.isFirst(unit)){
+      unit = env.getInput().get();
+      if(!ExprNode.isFirst(unit)) break;
+      // System.out.println(unit);
+
+      if(unit.getType() == LexicalType.INTVAL || unit.getType() == LexicalType.DOUBLEVAL)
+      {
+        result.add(unit);
+      }else if(unit.getType() == LexicalType.RP){
+        LexicalUnit ufs = rpn.pop();
+        while(ufs.getType() != LexicalType.LP) {
+          result.add(ufs);
+          ufs = rpn.pop();
+        }
+      }else if(unit.getType() == LexicalType.LP){
+        rpn.push(unit);
+      }else{
+        if(rpn.isEmpty() || rpn.peek().getType() == LexicalType.LP){
+          rpn.push(unit);
+        }
+        else if(!(priorityMap.get(rpn.peek().getType()) > priorityMap.get(unit.getType())))
+          rpn.push(unit);
+        else{
+          LexicalType t1 = rpn.peek().getType();
+          LexicalType t2 = unit.getType();
+          while(!(rpn.isEmpty()) && (t1 != LexicalType.LP) &&
+              (priorityMap.get(t1) > priorityMap.get(t2))){
+            t1 = rpn.peek().getType();
+            result.add(rpn.pop());
+          }
+          rpn.add(unit);
+        }
+      }
     }
+
+    while(!rpn.isEmpty()) result.add(rpn.pop());
+
+    System.out.println("---------------------");
+    while(!result.isEmpty()){
+      System.out.println(result.poll());
+    }
+
+    return true;
   }
 
   @Override
   public String toString() {
-    return "aa";
-    // return first.getValue();
+    return first.value.getSValue();
   }
 }
