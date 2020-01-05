@@ -10,10 +10,12 @@ public class SubstNode extends Node{
   Environment env;
   LexicalUnit first;
   Node handler;
+  LexicalUnit expr;
 
   private SubstNode(LexicalUnit first, Environment env) {
-    this.env = env;
-    this.first = first;
+    super(first, env);
+    // this.env = env;
+    // this.first = first;
   }
 
   public static Node getHandler(LexicalUnit unit, Environment env){
@@ -29,18 +31,21 @@ public class SubstNode extends Node{
     // LexicalUnit first = env.getInput().get();
     // env.getInput().unget(first);
     System.out.println("subst");
-    if(Variable.isFirst(first)){
-      handler = Variable.getHandler(first, env);
+    if(Variable.isFirst(super.first)){
+      handler = Variable.getHandler(super.first, super.env);
     }
-    LexicalUnit eq = env.getInput().get();
+    LexicalUnit eq = super.env.getInput().get();
 
-    if(eq.getType() != LexicalType.EQ) return false;
+    if(eq.getType() != LexicalType.EQ) {
+      super.env.getInput().unget(eq);
+      return false;
+    }
 
-    LexicalUnit expr = env.getInput().get();
-    env.getInput().unget(expr);
+    expr = super.env.getInput().get();
+    super.env.getInput().unget(expr);
     if(ExprNode.isFirst(expr)){
-      handler = ExprNode.getHandler(first, env);
-      handler.parse();
+      handler = ExprNode.getHandler(super.first, super.env);
+      if(!handler.parse()) return false;
     }else return false;
 
     return true;
@@ -48,7 +53,7 @@ public class SubstNode extends Node{
 
   @Override
   public String toString() {
-    return first.value.getSValue() + "[";
+    return super.first.value.getSValue() + "[" + this.handler.toString() + "];";
     // return handler.toString();
   }
 

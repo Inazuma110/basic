@@ -7,16 +7,16 @@ public class CallSub extends Node{
       LexicalType.NAME
       );
 
-  public LexicalUnit first;
-  public Environment env;
+  LexicalUnit funcName;
+  List<Node> exprs = new ArrayList<>();
+  String output = "";
 
   private CallSub(LexicalUnit first, Environment env) {
-    this.env = env;
-    this.first = first;
+    super(first, env);
   }
 
   public static Node getHandler(LexicalUnit unit, Environment env){
-    return null;
+    return new CallSub(unit, env);
   }
 
   public static boolean isFirst(LexicalUnit unit){
@@ -25,17 +25,33 @@ public class CallSub extends Node{
 
   // @Override
   public boolean parse() throws Exception{
-    LexicalUnit first = env.getInput().get();
+    System.out.println("CallSub");
+    funcName = super.first;
+    if(super.env.getInput().get().getType() != LexicalType.LP) return false;
+
+    LexicalUnit exprFirst = super.env.getInput().get();
+    super.env.getInput().unget(exprFirst);
 
     while(true){
-      if(Stmt.isFirst(first)){
-        Node handler = Stmt.getHandler(first, env);
-        handler.parse();
-      }else if(Block.isFirst(first)){
-        Node handler = Block.getHandler(first, env);
-        handler.parse();
-      }else break;
+      if(ExprNode.isFirst(exprFirst)){
+        handler = ExprNode.getHandler(exprFirst, super.env);
+        if(!handler.parse()) return false;
+        exprs.add(handler);
+        LexicalUnit rpOrComma = super.env.getInput().get();
+        if(rpOrComma.getType() == LexicalType.RP) break;
+        else if(rpOrComma.getType() == LexicalType.COMMA) continue;
+        else return false;
+      }else return false;
     }
-    return false;
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    output += funcName.value.getSValue() + "[";
+    for(Node e : exprs) output += e.toString() + " ";
+    output = output.substring(0, output.length()-1);
+    output += "];";
+    return output;
   }
 }

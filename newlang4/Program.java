@@ -15,9 +15,8 @@ public class Program extends Node{
       LexicalType.WHILE, LexicalType.IF, LexicalType.DO
       );
 
-  private Program(LexicalUnit first, Environment env) {
-    this.env = env;
-    this.first = first;
+  Program(LexicalUnit first, Environment env) {
+    super(first, env);
   }
 
   public static Node getHandler(LexicalUnit first, Environment env){
@@ -28,15 +27,12 @@ public class Program extends Node{
     return firstSet.contains(unit.getType());
   }
 
-  // @Override
+  @Override
   public boolean parse() throws Exception{
-    // LexicalUnit first = env.getInput().get();
     System.out.println("Program");
-    if(StmtList.isFirst(first)){
-      stmt_list = StmtList.getHandler(first, env);
+    if(StmtList.isFirst(super.first)){
+      stmt_list = StmtList.getHandler(super.first, super.env);
       return stmt_list.parse();
-      // handler.parse();
-      // return true;
     }
     return false;
   }

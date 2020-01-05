@@ -158,7 +158,7 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
     Value val = new ValueImpl(target, ValueType.STRING);
     LexicalUnit unit;
     try{
-      unit = new LexicalUnit(LexicalType.valueOf(target));
+      unit = new LexicalUnit(LexicalType.valueOf(target), val);
     }catch(Exception e){
       unit = new LexicalUnit(LexicalType.NAME, val);
     }
@@ -196,11 +196,12 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
   }
 
   private LexicalUnit specialGet(char c1){
-    if(c1 == '\n') return new LexicalUnit(LexicalType.NL);
-    if(c1 == ' ' || c1 == '\t') return new LexicalUnit(LexicalType.SPACE);
-
     String target = "";
     target += c1;
+
+    if(c1 == '\n') return new LexicalUnit(LexicalType.NL, new ValueImpl(target, ValueType.STRING));
+    if(c1 == ' ' || c1 == '\t') return new LexicalUnit(LexicalType.SPACE);
+
     if(target.equals("(") || target.equals(")")){
       Value val = new ValueImpl(target, ValueType.STRING);
       return new LexicalUnit(symbolMap.get(target), val);
@@ -239,7 +240,9 @@ public class LexicalAnalyzerImpl implements LexicalAnalyzer{
   public void unget(LexicalUnit token) throws Exception{
     String val = token.value.getSValue();
     try{
+      if(token.getType() == LexicalType.LITERAL) reader.unread((int)'"');
       reader.unread(val.toCharArray());
+      if(token.getType() == LexicalType.LITERAL) reader.unread((int)'"');
     }catch(Exception e){
       e.printStackTrace();
     }

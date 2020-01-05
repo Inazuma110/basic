@@ -48,4 +48,8 @@ public class ValueImpl implements Value{
   public int getIValue(){
     return intVal;
   }
+
+  public String toString(){
+    return getSValue();
+  }
 }

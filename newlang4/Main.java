@@ -11,7 +11,7 @@ public class Main {
     LexicalAnalyzer lex;
     LexicalUnit	first;
     Environment	env;
-    Node		program;
+    Node		handler = null;
 
     System.out.println("basic parser");
     // fin = new FileInputStream("./test.bas");
@@ -19,23 +19,15 @@ public class Main {
     env = new Environment(lex);
     first = env.getInput().get();
     // first = lex.get();
-    System.out.println(first);
     lex.unget(first);
-
+    // while(first.getType() != LexicalType.EOF) System.out.println(first = env.getInput().get());
 
     if(Program.isFirst(first)){
-      Node handler = Program.getHandler(first, env);
-      handler.parse();
-      // System.out.println(handler);
+      handler = Program.getHandler(first, env);
+      if(!handler.parse()) System.out.println("error");
+      System.out.println(handler);
     }else{
       System.out.println("syntax error");
     }
-
-  // program = Program.isMatch(env, first);
-    // if (program != null && program.Parse()) {
-    //   System.out.println(program);
-    //   System.out.println("value = " + program.getValue());
-    // }
-    // else System.out.println("syntax error");
   }
 }

@@ -8,13 +8,11 @@ public class StmtList extends Node{
       LexicalType.WHILE, LexicalType.IF, LexicalType.DO
       );
 
-  Environment env;
-  LexicalUnit first;
-  Node handler;
+  List<Node> children = new ArrayList<>();
+  String output = "";
 
   StmtList(LexicalUnit first, Environment env) {
-    this.env = env;
-    this.first = first;
+    super(first, env);
   }
 
   public static Node getHandler(LexicalUnit unit, Environment env){
@@ -27,23 +25,35 @@ public class StmtList extends Node{
 
   // @Override
   public boolean parse() throws Exception{
-    System.out.println("Stmtlist");
     while(true){
+      first = super.env.getInput().get();
+      if(first.getType() == LexicalType.NL) continue;
+      System.out.println("Stmtlist");
+
       if(Stmt.isFirst(first)){
         handler = Stmt.getHandler(first, env);
-        return handler.parse();
+        if(!handler.parse()) return false;
       }else if(Block.isFirst(first)){
         handler = Block.getHandler(first, env);
-        return handler.parse();
-      }else break;
+        if(!handler.parse()) return false;
+      }else if(first.getType() != LexicalType.EOF){
+        super.env.getInput().unget(first);
+        return true;
+      }else if(first.getType() == LexicalType.EOF) break;
+      // System.out.println(handler);
+      children.add(handler);
     }
-    return false;
+
+    return true;
   }
 
   @Override
   public String toString(){
-    return handler.toString();
-      // if(Stmt.isFirst(first)) return Stmt.toString(first);
-      // else if(Block.isFirst(first)) return Block.toString(first);
+    for(Node c : children){
+      output += c.toString() + " ";
+    }
+    output = output.substring(0, output.length()-1);
+    System.out.println(children.size());
+    return output;
   }
 }

@@ -7,16 +7,14 @@ public class Block extends Node{
       LexicalType.IF, LexicalType.WHILE, LexicalType.DO
       );
 
-  public LexicalUnit first;
-  public Environment env;
+  Node handler;
 
-  private Block(LexicalUnit first, Environment env) {
-    this.first = first;
-    this.env = env;
+  Block(LexicalUnit first, Environment env) {
+    super(first, env);
   }
 
   public static Node getHandler(LexicalUnit unit, Environment env){
-    return null;
+    return new Block(unit, env);
   }
 
   public static boolean isFirst(LexicalUnit unit){
@@ -25,17 +23,21 @@ public class Block extends Node{
 
   // @Override
   public boolean parse() throws Exception{
-    LexicalUnit first = env.getInput().get();
+    System.out.println("Block");
+    // LexicalUnit first = suprenv.getInput().get();
 
-    while(true){
-      if(Stmt.isFirst(first)){
-        Node handler = Stmt.getHandler(first, env);
-        handler.parse();
-      }else if(Block.isFirst(first)){
-        Node handler = Block.getHandler(first, env);
-        handler.parse();
-      }else break;
+    if(LoopBlock.isFirst(super.first)){
+      handler = LoopBlock.getHandler(super.first, super.env);
+      if(!handler.parse()) return false;
+    }else if(Block.isFirst(first)){
+      handler = Block.getHandler(first, env);
+      if(!handler.parse()) return false;
     }
-    return false;
+    return true;
+  }
+
+  @Override
+  public String toString() {
+    return handler.toString();
   }
 }

@@ -6,7 +6,6 @@ public class Variable extends Node {
   /** Creates a new instance of variable */
   public Variable(String name) {
     var_name = name;
-    System.out.println(var_name);
   }
   public Variable(LexicalUnit u) {
     var_name = u.getValue().getSValue();

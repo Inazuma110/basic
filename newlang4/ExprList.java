@@ -63,14 +63,8 @@ public class ExprNode extends Node{
         super.env.getInput().unget(unit);
         break;
       }
-      if(unit.getType() == LexicalType.LITERAL){
-        output = unit.value.getSValue();
-        result.add(unit);
-        return true;
-      }
 
-      if(unit.getType() == LexicalType.INTVAL || unit.getType() == LexicalType.DOUBLEVAL ||
-          unit.getType() == LexicalType.NAME)
+      if(unit.getType() == LexicalType.INTVAL || unit.getType() == LexicalType.DOUBLEVAL)
       {
         result.add(unit);
       }else if(unit.getType() == LexicalType.RP){
@@ -105,7 +99,6 @@ public class ExprNode extends Node{
     while(!result.isEmpty()){
       output += result.poll().value.getSValue() + " ";
     }
-    output = output.substring(0, output.length()-1);
     result = tmp;
 
     return true;

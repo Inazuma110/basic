@@ -3,8 +3,14 @@ package newlang4;
 public class Node {
   NodeType type;
   Environment env;
+  Node handler;
+  LexicalUnit first;
   /** Creates a new instance of Node */
   public Node() {
+  }
+  public Node(LexicalUnit first, Environment env) {
+    this.first = first;
+    this.env = env;
   }
   public Node(NodeType my_type) {
     type = my_type;

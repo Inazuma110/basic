@@ -45,5 +45,5 @@ public enum LexicalType {
   TO,
   WEND,
   EOF,
-  SPACE,
+  SPACE
 }

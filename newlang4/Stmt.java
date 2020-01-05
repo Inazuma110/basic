@@ -11,9 +11,8 @@ public class Stmt extends Node{
   public Environment env;
   public Node handler;
 
-  private Stmt(LexicalUnit first, Environment env) {
-    this.env = env;
-    this.first = first;
+  Stmt(LexicalUnit first, Environment env) {
+    super(first, env);
   }
 
   public static Node getHandler(LexicalUnit unit, Environment env){
@@ -26,21 +25,23 @@ public class Stmt extends Node{
 
   // @Override
   public boolean parse() throws Exception{
+    System.out.println("stmt");
 
-    while(true){
-      LexicalUnit first = env.getInput().get();
-      System.out.println("stmt");
-      if(SubstNode.isFirst(first)){
-        handler = SubstNode.getHandler(first, env);
-        handler.parse();
-      }else if(CallSub.isFirst(first)){
-        handler = Stmt.getHandler(first, env);
-        handler.parse();
+    if(SubstNode.isFirst(super.first)){
+      handler = SubstNode.getHandler(super.first, super.env);
+      if(!handler.parse()) {
+        handler = CallSub.getHandler(super.first, super.env);
+        if(!handler.parse()) return false;
       }
-      // }else if(For.isFirst(first)){
-      //   Node handler = Block.getHandler(first, env);
-      //   handler.parse();
-      else break;
+      // System.out.println(handler);
+      return true;
+    }
+    // }else if(For.isFirst(first)){
+    //   Node handler = Block.getHandler(first, env);
+    //   handler.parse();
+    if(super.first.getType() ==LexicalType.END){
+      handler = End.getHandler(super.first, super.env);
+      return true;
     }
     return false;
   }
