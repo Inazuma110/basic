@@ -3,9 +3,6 @@ import java.util.*;
 import java.*;
 
 public class ExprNode extends Node{
-  List<Node> operand = new ArrayList<Node>();
-  List<LexicalUnit> operate = new ArrayList<LexicalUnit>();
-
   static final Set<LexicalType> firstSet = EnumSet.of(
       LexicalType.NAME, LexicalType.INTVAL,
       LexicalType.DOUBLEVAL, LexicalType.LITERAL,
@@ -33,16 +30,6 @@ public class ExprNode extends Node{
     super(env);
   }
 
-
-
-  // private ExprNode(Node expr1, LexicalUnit ope, Node expr2, Environment env){
-  //   super(env);
-  //   type = NodeType.EXPR;
-  //   operand.add(expr1);
-  //   operate.add(ope);
-  //   operand.add(expr2);
-  // }
-
   public static Node getHandler(LexicalUnit unit, Environment env){
     return new ExprNode(env);
   }
@@ -51,7 +38,7 @@ public class ExprNode extends Node{
     return firstSet.contains(unit.getType());
   }
 
-  // @Override
+  @Override
   public boolean parse() throws Exception{
     System.out.println("expr");
     LexicalUnit unit = env.getInput().get();
@@ -101,7 +88,8 @@ public class ExprNode extends Node{
     }
 
     while(!rpn.isEmpty()) result.add(rpn.pop());
-    Queue<LexicalUnit> tmp = result;
+    Queue<LexicalUnit> tmp = new ArrayDeque<>();
+    tmp.addAll(result);
     while(!result.isEmpty()){
       output += result.poll().value.getSValue() + " ";
     }
@@ -114,5 +102,66 @@ public class ExprNode extends Node{
   @Override
   public String toString() {
     return output;
+  }
+
+  @Override
+  public Value eval(){
+    Queue<LexicalUnit> tmp = new ArrayDeque<>();
+    tmp.addAll(result);
+
+    LexicalUnit lu1 = result.poll();
+    LexicalUnit lu2 = result.poll();
+    LexicalUnit lu3 = result.poll();
+
+
+    int lu1v = 0, lu2v = 0;
+    if(lu1.getType() == LexicalType.NAME){
+      // System.out.println(super.env.getVariable(lu1.value.getSValue()).getValue().getSValue());
+      lu1v = Integer.parseInt(super.env.getVariable(lu1.value.getSValue()).getValue().getSValue());
+    }else{
+      lu1v = Integer.parseInt(lu1.value.getSValue());
+    }
+
+    if(lu2 == null){
+      result = tmp;
+      return new ValueImpl(String.valueOf(lu1v), ValueType.INTEGER);
+    }
+
+    if(lu2.getType() == LexicalType.NAME){
+      lu2v = Integer.parseInt(super.env.getVariable(lu2.value.getSValue()).getValue().getSValue());
+    }else{
+      lu2v = Integer.parseInt(lu2.value.getSValue());
+    }
+
+    int resv = calc(lu1v, lu2v, (String)lu3.value.getSValue());
+
+    while(!result.isEmpty()){
+      LexicalUnit unit1 = result.poll();
+      LexicalUnit unit2 = result.poll();
+      int v1 = 0;
+      if(unit1.getType() == LexicalType.NAME){
+        v1 = Integer.parseInt(super.env.getVariable(unit1.value.getSValue()).getValue().getSValue());
+      }else{
+        v1 = Integer.parseInt(unit1.value.getSValue());
+      }
+
+      resv = calc(resv, v1, (String)lu3.value.getSValue());
+    }
+    result = tmp;
+    return new ValueImpl(String.valueOf(resv), ValueType.INTEGER);
+  }
+
+  private int calc(int a, int b, String ope){
+    if(ope.equals("+")) {
+      return a + b;
+    }else if(ope.equals("-")){
+      return a - b;
+    }else if(ope.equals("*")){
+      return a * b;
+    }else if(ope.equals("/")){
+      return a / b;
+    }else if(ope.equals("%")){
+      return a % b;
+    }else return -1;
   }
 }

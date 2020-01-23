@@ -26,6 +26,7 @@ public class Main {
       handler = Program.getHandler(first, env);
       if(!handler.parse()) System.out.println("error");
       System.out.println(handler);
+      handler.eval();
     }else{
       System.out.println("syntax error");
     }

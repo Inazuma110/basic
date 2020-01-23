@@ -23,7 +23,7 @@ public class StmtList extends Node{
     return firstSet.contains(unit.getType());
   }
 
-  // @Override
+  @Override
   public boolean parse() throws Exception{
     while(true){
       first = super.env.getInput().get();
@@ -40,7 +40,6 @@ public class StmtList extends Node{
         super.env.getInput().unget(first);
         return true;
       }else if(first.getType() == LexicalType.EOF) break;
-      // System.out.println(handler);
       children.add(handler);
     }
 
@@ -53,7 +52,15 @@ public class StmtList extends Node{
       output += c.toString() + " ";
     }
     output = output.substring(0, output.length()-1);
-    System.out.println(children.size());
     return output;
   }
+
+  @Override
+  public Value eval(){
+    for(Node c : children){
+      c.eval();
+    }
+    return null;
+  }
+
 }

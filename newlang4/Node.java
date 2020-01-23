@@ -31,4 +31,10 @@ public class Node {
     if (type == NodeType.END) return "END";
     else return "Node";
   }
+
+  public Value eval(){
+    return null;
+  }
+  public void setValue(Value my_v){
+  }
 }

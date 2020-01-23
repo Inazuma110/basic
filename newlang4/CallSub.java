@@ -23,7 +23,7 @@ public class CallSub extends Node{
     return firstSet.contains(unit.getType());
   }
 
-  // @Override
+  @Override
   public boolean parse() throws Exception{
     System.out.println("CallSub");
     funcName = super.first;
@@ -53,5 +53,12 @@ public class CallSub extends Node{
     output = output.substring(0, output.length()-1);
     output += "];";
     return output;
+  }
+
+  @Override
+  public Value eval(){
+    if(super.env.library.get(funcName.value.getSValue()) == null) return null;
+    Function f = super.env.getFunction(funcName.value.getSValue());
+    return f.eval(exprs);
   }
 }

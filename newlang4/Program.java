@@ -40,4 +40,9 @@ public class Program extends Node{
   public String toString(){
     return stmt_list.toString();
   }
+
+  @Override
+  public Value eval(){
+    return stmt_list.eval();
+  }
 }

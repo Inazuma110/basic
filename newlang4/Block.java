@@ -40,4 +40,8 @@ public class Block extends Node{
   public String toString() {
     return handler.toString();
   }
+  @Override
+  public Value eval(){
+    return handler.eval();
+  }
 }

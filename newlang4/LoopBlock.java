@@ -64,8 +64,6 @@ public class LoopBlock extends Node{
 
       if(super.env.getInput().get().getType() != LexicalType.LOOP) return false;
       if(super.env.getInput().get().getType() != LexicalType.NL) return false;
-      // System.out.println(111);
-      // System.out.println(super.env.getInput().get().getType());
       return true;
 
     }
@@ -79,5 +77,28 @@ public class LoopBlock extends Node{
       "[" + cond1.toString() + " " + ope + " " + cond2.toString() + "]" +
       stmtList.toString() + "]";
   // whileOrUntil;
+  }
+
+  public Value eval(){
+    int expr1 = Integer.parseInt(cond1.eval().getSValue());
+    int expr2 = Integer.parseInt(cond2.eval().getSValue());
+    boolean is_continue = calc(expr1, expr2);
+    while(!is_continue){
+      stmtList.eval();
+      expr1 = Integer.parseInt(cond1.eval().getSValue());
+      expr2 = Integer.parseInt(cond2.eval().getSValue());
+      is_continue = calc(expr1, expr2);
+    }
+    return null;
+  }
+
+  public boolean calc(int expr1, int expr2){
+    if(ope.getType() == LexicalType.LT){
+      return expr1 < expr2;
+    }else if(ope.getType() == LexicalType.LE){
+      return expr1 <= expr2;
+    }
+    System.out.println("error");
+    return false;
   }
 }

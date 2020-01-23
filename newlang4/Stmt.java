@@ -33,7 +33,6 @@ public class Stmt extends Node{
         handler = CallSub.getHandler(super.first, super.env);
         if(!handler.parse()) return false;
       }
-      // System.out.println(handler);
       return true;
     }
     // }else if(For.isFirst(first)){
@@ -48,5 +47,10 @@ public class Stmt extends Node{
 
   public String toString() {
     return handler.toString();
+  }
+
+  @Override
+  public Value eval(){
+    return handler.eval();
   }
 }

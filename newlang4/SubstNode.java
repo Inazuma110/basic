@@ -9,13 +9,12 @@ public class SubstNode extends Node{
 
   Environment env;
   LexicalUnit first;
-  Node handler;
+  Node variable;
+  Node exprHandler;
   LexicalUnit expr;
 
   private SubstNode(LexicalUnit first, Environment env) {
     super(first, env);
-    // this.env = env;
-    // this.first = first;
   }
 
   public static Node getHandler(LexicalUnit unit, Environment env){
@@ -26,13 +25,11 @@ public class SubstNode extends Node{
     return firstSet.contains(unit.getType());
   }
 
-  // @Override
+  @Override
   public boolean parse() throws Exception{
-    // LexicalUnit first = env.getInput().get();
-    // env.getInput().unget(first);
     System.out.println("subst");
     if(Variable.isFirst(super.first)){
-      handler = Variable.getHandler(super.first, super.env);
+      variable = Variable.getHandler(super.first, super.env);
     }
     LexicalUnit eq = super.env.getInput().get();
 
@@ -44,17 +41,27 @@ public class SubstNode extends Node{
     expr = super.env.getInput().get();
     super.env.getInput().unget(expr);
     if(ExprNode.isFirst(expr)){
-      handler = ExprNode.getHandler(super.first, super.env);
-      if(!handler.parse()) return false;
+      exprHandler = ExprNode.getHandler(super.first, super.env);
+      if(!exprHandler.parse()) return false;
     }else return false;
-
     return true;
   }
 
   @Override
   public String toString() {
-    return super.first.value.getSValue() + "[" + this.handler.toString() + "];";
-    // return handler.toString();
+    return super.first.value.getSValue() + "[" + this.exprHandler.toString() + "];";
+    // return variable.to_string() + "[" + this.exprHandler.toString() + "];";
   }
 
+  @Override
+  public Value eval(){
+    try{
+      Value v = exprHandler.eval();
+      variable.setValue(v);
+    }catch(Exception e){
+      e.printStackTrace();
+    }
+    super.env.var_table.put(this.variable.toString(), (Variable)variable);
+    return null;
+  }
 }
